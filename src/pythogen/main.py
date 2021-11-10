@@ -1,11 +1,10 @@
-from typing import Any, Callable
 from string import ascii_letters
 import numpy as np
 from dataclasses import dataclass, field
 
 from crossover import single_point
 from mutate import exchange2
-from selection import roulette_wheel, tournament
+from selection import roulette_wheel
 
 CHAR_VOCAB = np.array(list(ascii_letters))
 
@@ -15,8 +14,8 @@ TARGET_INDICES = np.array([TARGET_LIST.index(i) for i in list(TARGET)])
 
 
 class evaluate_genome:
-    def evaluate(self, indices: list[int]) -> float:
-        diff = np.sum(np.abs(TARGET_INDICES - indices))
+    def evaluate(self, indices: list[int]) -> np.float32:
+        diff = np.sum(np.abs(TARGET_INDICES - indices), dtype=np.float32)
         return diff
 
 
@@ -44,12 +43,10 @@ class island:
             high=CHAR_VOCAB.shape[0],
             size=(self.population_size, self.genome_size),
         )
-
         self.fitness = np.apply_along_axis(self.evaluate, 1, self.population)
-        # self.fitness = np.zeros((self.population_size, 1), dtype=np.float32)
-        # self.fitness = np.random.rand(self.population_size, 1)
 
     def step(self, init: bool = False):
+        """Performs an iteration; producing a new population."""
         parent1 = self.population[self.select()]
         parent2 = self.population[self.select()]
 
@@ -62,12 +59,6 @@ class island:
 
         fitness1 = self.evaluate(child1)
         fitness2 = self.evaluate(child2)
-
-        print(fitness1)
-        print(fitness2)
-
-        # self.population[0] = child1
-        # self.population[1] = child2
 
         return self
 
