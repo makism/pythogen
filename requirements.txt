@@ -1,0 +1,12 @@
+numpy>=1.19.0
+
+flake8
+pytest
+pytest-cov
+coveralls
+codacy-coverage
+coverage
+codecov
+mypy
+tox
+tox-conda
