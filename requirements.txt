@@ -1,4 +1,6 @@
 numpy>=1.19.0
+tqdm
+joblib
 
 flake8
 pytest
